@@ -1,0 +1,46 @@
+<HTML>
+    <head>
+        <title>Bright Demo</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='loading-bar.css') }}"/>
+        <script type="text/javascript" src="{{ url_for('static', filename='loading-bar.js') }}"></script>
+    </head>
+    <body>
+        <div id="speed_meter"
+            class="ldBar label-center"
+            data-value="0"
+            style="display: inline-block;right: -15%;width:33%;height:33%;margin:auto"
+            data-preset="circle"
+  ></div>
+      <div  id="sun_meter"
+            class="ldBar label-center"
+            style="display: inline-block;right: -15%; width:33%;height:33%;margin:auto"
+            data-value="0"
+            data-preset="circle"
+        >
+    </div>
+    </body>
+    <script>
+        console.log(speed_meter);
+        setInterval(function(){
+            $.ajax({ url: "/speed", success: function(data){
+            //Update your dashboard gauge
+                var speed_meter = document.getElementById("speed_meter").ldBar;
+                speed_meter.set(data.value);
+                if(speed_meter.value==100){
+                    if(!alert("Bravo! hai prodotto dell'energia")){window.location.reload();}
+                }
+            }, dataType: "json"});
+        }, 1000);
+        setInterval(function(){
+            $.ajax({ url: "/sun", success: function(data){
+                //Update your dashboard gauge
+                var sun_meter = document.getElementById("sun_meter").ldBar;
+                sun_meter.set(data.value);
+                if(sun_meter.value==100){
+                    window.alert("Bravo! hai prodotto dell'energia");
+                }
+            }, dataType: "json"});
+        }, 1000);
+    </script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</HTML>
